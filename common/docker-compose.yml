@@ -1,15 +1,15 @@
-version: '3.8'
+
 
 services:
   postgres:
     image: postgres:15-alpine
     container_name: cbs-postgres
+    ports:
+      - "5432:5432"  # <--- Vérifiez bien cette ligne !
     environment:
       POSTGRES_USER: cbsuser
       POSTGRES_PASSWORD: cbspassword
       POSTGRES_DB: cbsdb
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
