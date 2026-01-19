@@ -24,13 +24,13 @@ Le Package Service est un microservice RESTful responsable de la gestion complè
    mvn spring-boot:run
    ```
 
-L'application sera accessible sur `http://localhost:8080`.
+L'application sera accessible sur `http://localhost:8081`.
 
 ## Endpoints API
 
 ### Créer un colis
 ```bash
-curl -X POST http://localhost:8080/api/packages \
+curl -X POST http://localhost:8081/api/packages \
   -H "Content-Type: application/json" \
   -d '{
     "description": "Colis fragile - Électronique",
@@ -43,17 +43,17 @@ curl -X POST http://localhost:8080/api/packages \
 
 ### Récupérer tous les colis (avec pagination)
 ```bash
-curl -X GET "http://localhost:8080/api/packages?page=0&size=10&sort=packageId,asc"
+curl -X GET "http://localhost:8081/api/packages?page=0&size=10&sortBy=packageName&sortDir=desc"
 ```
 
 ### Récupérer un colis par ID
 ```bash
-curl -X GET http://localhost:8080/api/packages/1
+curl -X GET http://localhost:8081/api/packages/1
 ```
 
 ### Mettre à jour un colis (mise à jour partielle)
 ```bash
-curl -X PUT http://localhost:8080/api/packages/1 \
+curl -X PATCH http://localhost:8081/api/packages/1 \
   -H "Content-Type: application/json" \
   -d '{
     "packageStatus": "IN_TRANSIT"
@@ -62,34 +62,35 @@ curl -X PUT http://localhost:8080/api/packages/1 \
 
 ### Supprimer un colis
 ```bash
-curl -X DELETE http://localhost:8080/api/packages/1
+curl -X DELETE http://localhost:8081/api/packages/1
 ```
 
 ## Pagination et Tri
 
 La pagination utilise les paramètres suivants :
 - `page` : numéro de page (défaut : 0)
-- `size` : nombre d'éléments par page (défaut : 20)
-- `sort` : champ de tri (défaut : packageId,asc)
+- `size` : nombre d'éléments par page (défaut : 10)
+- `sortBy` : champ de tri (défaut : packageId)
+- `sortDir` : direction du tri - asc/desc (défaut : asc)
 
-Exemple : `?page=1&size=5&sort=weight,desc`
+Exemple : `?page=1&size=5&sortBy=weight&sortDir=desc`
 
 ## Statut de santé
 
 Vérifiez la santé du service :
 ```bash
-curl http://localhost:8080/actuator/health
+curl http://localhost:8081/actuator/health
 ```
 
 ## Documentation API
 
 La documentation OpenAPI est disponible via Swagger UI :
-- **Swagger UI** : `http://localhost:8080/swagger-ui.html`
-- **OpenAPI JSON** : `http://localhost:8080/v3/api-docs`
+- **Swagger UI** : `http://localhost:8081/swagger-ui/index.html`
+- **OpenAPI JSON** : `http://localhost:8081/v3/api-docs`
 
 ## Architecture
 
-- **Framework** : Spring Boot 4.0.1
+- **Framework** : Spring Boot 3.4.1
 - **Base de données** : PostgreSQL
 - **ORM** : JPA/Hibernate
 - **Validation** : Jakarta Validation

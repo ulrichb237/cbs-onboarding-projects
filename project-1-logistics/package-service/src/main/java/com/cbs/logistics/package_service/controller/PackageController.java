@@ -7,9 +7,9 @@ import com.cbs.logistics.package_service.service.PackageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +22,11 @@ public class PackageController {
 
     private final PackageService packageService;
 
-
-
     @PostMapping
     public ResponseEntity<PackageDto> createPackage(@Valid @RequestBody CreatePackageRequest request) {
         PackageDto packageDto = packageService.create(request);
         URI location = URI.create("/api/packages/" + packageDto.packageId());
         return ResponseEntity.created(location).body(packageDto);
-
     }
 
     @GetMapping("/{id}")
@@ -40,7 +37,13 @@ public class PackageController {
 
     @GetMapping
     public ResponseEntity<Page<PackageDto>> getAllPackages(
-            @PageableDefault(page = 0, size = 20, sort = "packageId") Pageable pageable) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "packageId") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir
+            ){
+        Sort.Direction direction = sortDir.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<PackageDto> packages = packageService.getAll(pageable);
         return ResponseEntity.ok(packages);
     }

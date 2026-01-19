@@ -22,8 +22,10 @@ public class CreatePackageRequest {
     @NotBlank(message = "La description est obligatoire")
     private String description;
 
+    @NotBlank(message = "Le nom du colis est obligatoire")
     private String packageName;
 
+    @NotBlank(message = "Le type de colis est obligatoire")
     private String packageType;
 
     @NotNull(message = "Le poids est obligatoire")
@@ -33,6 +35,6 @@ public class CreatePackageRequest {
     @NotNull(message = "L'indicateur de fragilité est obligatoire")
     private Boolean fragile;
 
-    @NotNull(message = "Le statut est obligatoire")
-    private PackageStatus packageStatus;
+
+
 }

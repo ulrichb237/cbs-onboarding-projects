@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class PackageService {
@@ -22,15 +20,11 @@ public class PackageService {
     private final PackageMapper packageMapper;
 
     public PackageDto create(CreatePackageRequest request) {
-
-        if (request.getPackageStatus() == null) {
-            request.setPackageStatus(PackageStatus.NEW);
-        }
-
         if (request.getDescription() == null || request.getDescription().trim().isEmpty()) {
             throw new IllegalArgumentException("Description cannot be null or empty");
         }
         Package entity = packageMapper.toEntity(request);
+        entity.setPackageStatus(PackageStatus.NEW);
         Package savedEntity = packageRepository.save(entity);
         return packageMapper.toDto(savedEntity);
     }

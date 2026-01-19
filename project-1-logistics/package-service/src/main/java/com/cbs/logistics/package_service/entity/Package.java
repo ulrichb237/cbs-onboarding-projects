@@ -27,5 +27,7 @@ public class Package {
     private boolean fragile;
     @Column
     private PackageStatus packageStatus;
+    @Column
+    private String locationId;
 
 }
